@@ -25,7 +25,7 @@ export default class Movies extends Component {
                                 {
                                     movieResult.map((movie) => (
                                         <div className="card movies-card">
-                                            <img src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} className='card-img-top banner-img' style={{ height: '40vh', width: '20vw' }} />
+                                            <img src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`} alt={movie.title} className='card-img-top movies-img'/>
                                             <h5 className="card-title movies-title">{movie.original_title}</h5>
                                             {/* <p className="card-text movies-text">{movie.overview}</p> */}
                                             <div className="button-wrapper" style={{display: 'flex', width: '100%', justifyContent: 'center'}}>

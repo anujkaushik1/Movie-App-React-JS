@@ -97,6 +97,11 @@
   bottom: 2rem;
 }
 
+.movies-img{
+  height: 40vh;
+  width: 20vw;
+}
+
 /* Mobile */
 
 @media screen and (max-width : 425px){  
@@ -115,5 +120,18 @@
     top : 17vh;
     left: 5vw;
   }
+  .movies-card{
+    width: 40vw;
+    margin: 0.5rem;
+  }
+  .movies-img{
+    width: 40vw;
+  }
+  .movies-button{
+    width: 35vw;
+    height: 20vw;
+  }
+
+  
 
 }
