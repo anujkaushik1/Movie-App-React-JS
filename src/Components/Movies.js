@@ -11,6 +11,7 @@ export default class Movies extends Component {
             <>
                 {
                     movieResult.length == 0 ?
+                    // Spinner
                         <div>
                             <div className="spinner-border text-primary" role="status">
                                 <span className="visually-hidden">Loading...</span>
@@ -19,6 +20,7 @@ export default class Movies extends Component {
 
                         :
 
+                        // Movies Cardsc
                         <div>
                             <h3 style={{ fontWeight: 'bold' }} className='text-center'>Trending</h3>
                             <div className='movies-list'>
@@ -35,6 +37,20 @@ export default class Movies extends Component {
                                     ))
                                 }
                             </div>
+
+                            {/* Pagination */}
+                            <div style={{display: 'flex', justifyContent: 'center'}}>
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                        </ul>
+                                    </nav>
+                            </div>
+                           
 
                         </div>
 
