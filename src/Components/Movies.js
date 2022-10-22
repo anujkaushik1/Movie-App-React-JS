@@ -6,7 +6,8 @@ export default class Movies extends Component {
     constructor(){
         super();
         this.state = {
-            hover: ''
+            hover: '',
+            parr : [1]
         }
     }
 
@@ -20,11 +21,31 @@ export default class Movies extends Component {
         this.setState({
             hover : ''
         })
+
     }
+
+    nextPage = () => {
+        this.setState({
+            parr : [...this.state.parr, this.state.parr.length + 1]
+        })
+    }
+
+    previousPage = () => {
+        let newArr = [...this.state.parr];
+        newArr.length > 1 && newArr.pop();
+
+        this.setState({
+            parr: newArr
+        })
+        
+        
+    }
+
 
     render() {
         let movieResult = movies.results;
         let id = this.state.hover;
+        let pagesArr = this.state.parr;
         return (
 
             <>
@@ -54,7 +75,7 @@ export default class Movies extends Component {
                                         <div className="button-wrapper" style={{display: 'flex', width: '100%', justifyContent: 'center'}}>
                                                 {
                                                 movie.id === id ? 
-                                                    <a href="#" className="btn btn-primary movies-button">Add to Favourites</a> 
+                                                    <a className="btn btn-primary movies-button">Add to Favourites</a> 
                                                 :
                                                 <></>
                                                 }
@@ -70,11 +91,13 @@ export default class Movies extends Component {
                         <div style={{display: 'flex', justifyContent: 'center'}}>
                                 <nav aria-label="Page navigation example">
                                     <ul class="pagination">
-                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                        <li class="page-item"><a class="page-link" onClick={this.previousPage}>Previous</a></li>
+                                         { 
+                                            pagesArr.map((page) => (
+                                                <li class="page-item"><a class="page-link" >{page}</a></li>
+                                            ))
+                                         }
+                                        <li class="page-item"><a class="page-link" onClick={this.nextPage}>Next</a></li>
                                     </ul>
                                 </nav>
                         </div>
