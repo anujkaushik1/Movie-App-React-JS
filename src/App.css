@@ -38,7 +38,7 @@
 }
 
 .banner-card{
-  width: 100vw;
+    width: 100vw;
     margin-top: 1vh;
     margin-bottom: 3vh;
     position: relative;
@@ -59,8 +59,29 @@
 
 .banner-text{
   position: absolute;
-  top: 50vh;
+  top: 55vh;
   left: 5vw;  
   height: 4.5rem;
   overflow: hidden;
+}
+
+/* Mobile */
+
+@media screen and (max-width : 425px){  
+
+  .banner-card{
+      height: 30vh;
+  }
+  .banner-img{
+    height: 30vh;
+  }
+  .banner-title{
+    top: 12vh;
+    left: 5vw;
+  }
+  .banner-text{
+    top : 17vh;
+    left: 5vw;
+  }
+
 }

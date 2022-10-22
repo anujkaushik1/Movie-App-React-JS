@@ -18,7 +18,7 @@ export default class Banner extends Component {
                     
                     <div className="card banner-card">
                         <img src={`https://image.tmdb.org/t/p/original${movieResult.backdrop_path}`}   alt={movieResult.title} className= 'card-img-top banner-img' />
-                        <h5 className="card-title banner-title">{movieResult.original_title}</h5>
+                        <h1 className="card-title banner-title">{movieResult.original_title}</h1>
                         <p  className="card-text banner-text">{movieResult.overview}</p>
                         
                     </div>
