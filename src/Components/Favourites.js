@@ -3,10 +3,11 @@ import { movies } from "./getMovies";
 
 export default class Favourites extends Component {
 
-    constructor(){
+    constructor() {
         super();
         this.state = {
-            genres : []
+            genres: [],
+            currGenre: 'All Geners'
         }
     }
 
@@ -36,17 +37,13 @@ export default class Favourites extends Component {
             37: "Western",
         };
 
-        movie.forEach((movieObj)=> {
-            if(!temp.includes(genreids[movieObj.genre_ids[0]])){
+        movie.forEach((movieObj) => {
+            if (!temp.includes(genreids[movieObj.genre_ids[0]])) {
                 temp.push(genreids[movieObj.genre_ids[0]]);
             }
         })
 
         temp.unshift("All Geners")
-
-        this.setState({
-            genre : [...temp]
-        })
 
         return (
             <>
@@ -56,24 +53,25 @@ export default class Favourites extends Component {
                             <ul class="list-group favourites-genres">
 
                                 {
-                                    temp.map((genre)=> (
-                                        <li class="list-group-item">{genre}</li>
+                                    temp.map((genre) => (
+
+                                        this.state.currGenre == genre  ?
+                                            <li class="list-group-item" style={{ background: '#3f51b5', color: 'white', fontWeight: 'bold' }} >{genre}</li> 
+                                            
+                                        :
+
+                                            <li class="list-group-item" style={{ background: 'white', color: '#3f51b5' }}>{genre}</li>
+
                                     ))
                                 }
 
-                                {/* <li class="list-group-item">All Geners</li>
-                                <li class="list-group-item">Action</li>
-                                <li class="list-group-item">Action</li>
-                                <li class="list-group-item">Action</li>
-                                <li class="list-group-item">Action</li>
-                                <li class="list-group-item">Action</li> */}
                             </ul>
                         </div>
 
                         <div className="col-9 favourites-table">
                             <div className="row">
-                                <input type="text" className="input-group-text col" />
-                                <input type="number" className="input-group-text col" />
+                                <input type="text" className="input-group-text col" placeholder="Search"/>
+                                <input type="number" className="input-group-text col" placeholder="Rows Count"/>
                             </div>
 
                             <div className="row">
