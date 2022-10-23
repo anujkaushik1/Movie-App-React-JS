@@ -9,8 +9,8 @@ export default class Movies extends Component {
         super();
         this.state = {
             hover: '',
-            parr: [1],
-            currPage: 1,
+            parr: [1],  // for all pages button shown in UI
+            currPage: 1,  // current page
             movies : []
         }
     }
@@ -74,11 +74,20 @@ export default class Movies extends Component {
     }
 
 
+    clickPages = async (idx) => {
+        const res = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=5984df98ddb29f07afe65af3db9ac90c&page=${idx + 1}`);
+        let data = res.data.results;
+        
+        this.setState({
+            movies : [...data]
+        })
+
+    }   
+
     render() {
         let movieResult = this.state.movies;
         let id = this.state.hover;
         let pagesArr = this.state.parr;
-        console.log('render');
         return (
 
             <>
@@ -127,7 +136,7 @@ export default class Movies extends Component {
                                         <li class="page-item"><a class="page-link" onClick={this.previousPage}>Previous</a></li>
                                         {
                                             pagesArr.map((page, idx) => (
-                                                <li key={idx} class="page-item"><a class="page-link" >{page}</a></li>
+                                                <li key={idx} class="page-item"><a class="page-link" onClick={() => this.clickPages(idx)}>{page}</a></li>
                                             ))
                                         }
                                         <li class="page-item"><a class="page-link" onClick={this.nextPage}>Next</a></li>
