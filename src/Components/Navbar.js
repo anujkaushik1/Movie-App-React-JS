@@ -6,7 +6,7 @@ export default class Navbar extends Component {
     return (
       <div style={{display: 'flex' }}>
         <Link to = "/" style={{textDecoration : 'none'}}>
-            <h1>Movies App</h1>
+            <h1 style={{marginTop : '1rem', marginLeft : '1rem'}}>Movies App</h1>
         </Link>
         
         <Link to = "/favourites" style={{textDecoration : 'none'}}>

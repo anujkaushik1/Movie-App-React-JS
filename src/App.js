@@ -10,10 +10,16 @@ function App() {
   return (
 
     <BrowserRouter>
-      <Navbar/>
+      <Navbar />
       <Routes>
-        <Route path="/" element = {<Movies/>}/>
-        <Route path='/favourites' element={<Favourites/>} />
+        <Route path="/" element={
+          <>
+            <Banner/>
+            <Movies />
+          </>
+        } />
+
+        <Route path='/favourites' element={<Favourites />} />
 
       </Routes>
     </BrowserRouter>

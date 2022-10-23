@@ -11,7 +11,8 @@ export default class Movies extends Component {
             hover: '',
             parr: [1],  // for all pages button shown in UI
             currPage: 1,  // current page
-            movies : []
+            movies : [],
+            favourites : []
         }
     }
 
@@ -84,6 +85,25 @@ export default class Movies extends Component {
 
     }   
 
+    sendDataLocalStorage =(movie)=>{
+        let oldData = JSON.parse(localStorage.getItem("movies-app") || "[]")
+        if(this.state.favourites.includes(movie.id)){
+            oldData = oldData.filter((m)=>m.id!=movie.id)
+        }else{
+            oldData.push(movie)
+        }
+        localStorage.setItem("movies-app",JSON.stringify(oldData));
+        console.log(oldData);
+        this.handleFavouritesState();
+    }
+    handleFavouritesState=()=>{
+        let oldData = JSON.parse(localStorage.getItem("movies-app") || "[]")
+        let temp = oldData.map((movie)=>movie.id);
+        this.setState({
+            favourites:[...temp]
+        })
+    }
+
     render() {
         let movieResult = this.state.movies;
         let id = this.state.hover;
@@ -117,7 +137,7 @@ export default class Movies extends Component {
                                             <div className="button-wrapper" style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
                                                 {
                                                     movie.id === id ?
-                                                        <a className="btn btn-primary movies-button">Add to Favourites</a>
+                                                        <a className="btn btn-primary movies-button" onClick={() => this.sendDataLocalStorage(movie)}>{this.state.favourites.includes(movie.id) ? 'Remove From Favourites' : 'Add to Favorites'}</a>
                                                         :
                                                         <></>
                                                 }
