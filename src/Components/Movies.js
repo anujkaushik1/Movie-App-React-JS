@@ -52,18 +52,24 @@ export default class Movies extends Component {
         })
     }
 
-    previousPage = () => {
-        let newArr = [...this.state.parr];
-        newArr.length > 1 && newArr.pop();
-        let currPage = this.state.currPage;
+    previousPage = async () => {
 
-        let newPage = currPage > 1 ? currPage - 1 : 1;
+        if(this.state.currPage > 1){
+            const res = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=5984df98ddb29f07afe65af3db9ac90c&page=${this.state.currPage - 1}`);
+            let data = res.data;
 
-        this.setState({
-            parr: newArr,
-            currPage : newPage
-        })
-
+            let newArr = [...this.state.parr];
+            newArr.length > 1 && newArr.pop();
+            let currPage = this.state.currPage;
+    
+            let newPage = currPage > 1 ? currPage - 1 : 1;
+    
+            this.setState({
+                parr: newArr,
+                currPage : newPage,
+                movies: [...data.results]
+            })
+        }
 
     }
 
@@ -120,8 +126,8 @@ export default class Movies extends Component {
                                     <ul class="pagination">
                                         <li class="page-item"><a class="page-link" onClick={this.previousPage}>Previous</a></li>
                                         {
-                                            pagesArr.map((page) => (
-                                                <li class="page-item"><a class="page-link" >{page}</a></li>
+                                            pagesArr.map((page, idx) => (
+                                                <li key={idx} class="page-item"><a class="page-link" >{page}</a></li>
                                             ))
                                         }
                                         <li class="page-item"><a class="page-link" onClick={this.nextPage}>Next</a></li>
