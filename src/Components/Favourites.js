@@ -8,11 +8,13 @@ export default class Favourites extends Component {
         this.state = {
             genres: [],
             currGenre: 'All Geners',
-            movies : []
+            movies: [],
+            currText: '',
+            limit: 5
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         let data = JSON.parse(localStorage.getItem("movies") || "[]");
 
         const movie = movies.results;
@@ -47,22 +49,61 @@ export default class Favourites extends Component {
         })
 
         temp.unshift("All Geners")
-        
+
         this.setState({
-            movies : [...data],
-            genres : [...temp]
+            movies: [...data],
+            genres: [...temp]
         })
     }
 
     handleGenreChange = (genre) => {
         this.setState({
-            currGenre : genre
+            currGenre: genre
+        })
+    }
+
+    sortPopularityDesc = () => {
+        let temp = this.state.movies;
+        temp.sort(function (a, b) {
+            return b.popularity - a.popularity;
+        })
+        this.setState({
+            movies: [...temp]
+        })
+    }
+
+    sortPopularityAsc = () => {
+        let temp = this.state.movies;
+        temp.sort(function (a, b) {
+            return a.popularity - b.popularity;
+        })
+        this.setState({
+            movies: [...temp]
+        })
+    }
+
+    sortRatingDesc = () => {
+        let temp = this.state.movies;
+        temp.sort(function (a, b) {
+            return b.vote_average - a.vote_average;
+        })
+        this.setState({
+            movies: [...temp]
+        })
+    }
+
+    sortRatingAsc = () => {
+        let temp = this.state.movies;
+        temp.sort(function (a, b) {
+            return a.vote_average - b.vote_average;
+        })
+        this.setState({
+            movies: [...temp]
         })
     }
 
     render() {
 
-        
         let genreids = {
             28: "Action",
             12: "Adventure",
@@ -87,17 +128,30 @@ export default class Favourites extends Component {
 
         let filterArr = [];
 
-        if(this.state.currGenre !== 'All Geners'){
+        if (this.state.currText !== '') {
             filterArr = this.state.movies.filter((movieObj) => {
-                if(genreids[movieObj.genre_ids[0]] === this.state.currGenre){
+                let title = movieObj.title.toLowerCase();
+
+                if (title.includes(this.state.currText.toLowerCase())) {
+                    return title.includes(this.state.currText.toLowerCase());
+                }
+            })
+        }
+        else {
+            filterArr = [...this.state.movies];
+        }
+
+        console.log(filterArr);
+
+        if (this.state.currGenre !== 'All Geners') {
+            filterArr = this.state.movies.filter((movieObj) => {
+                if (genreids[movieObj.genre_ids[0]] === this.state.currGenre) {
                     return this.state.currGenre;
                 }
             })
         }
-        else{
-            filterArr = [...this.state.movies];
-        }
 
+       
         return (
             <>
                 <div className="main">
@@ -108,12 +162,12 @@ export default class Favourites extends Component {
                                 {
                                     this.state.genres.map((genre) => (
 
-                                        this.state.currGenre == genre  ?
-                                            <li class="list-group-item" style={{ background: '#3f51b5', color: 'white', fontWeight: 'bold' }} >{genre}</li> 
-                                            
-                                        :
+                                        this.state.currGenre == genre ?
+                                            <li class="list-group-item" style={{ background: '#3f51b5', color: 'white', fontWeight: 'bold' }} >{genre}</li>
 
-                                            <li class="list-group-item" style={{ background: 'white', color: '#3f51b5'}} onClick = {() => this.handleGenreChange(genre)}>{genre}</li>
+                                            :
+
+                                            <li class="list-group-item" style={{ background: 'white', color: '#3f51b5' }} onClick={() => this.handleGenreChange(genre)}>{genre}</li>
 
                                     ))
                                 }
@@ -123,8 +177,8 @@ export default class Favourites extends Component {
 
                         <div className="col-9 favourites-table">
                             <div className="row">
-                                <input type="text" className="input-group-text col" placeholder="Search"/>
-                                <input type="number" className="input-group-text col" placeholder="Rows Count"/>
+                                <input type="text" className="input-group-text col" placeholder="Search" value={this.state.currText} onChange={(e) => this.setState({ currText: e.target.value })} />
+                                <input type="number" className="input-group-text col" placeholder="Rows Count" />
                             </div>
 
                             <div className="row">
@@ -133,9 +187,8 @@ export default class Favourites extends Component {
                                         <tr>
                                             <th scope="col">Title</th>
                                             <th scope="col">Genre</th>
-                                            <th scope="col">Popularity</th>
-                                            <th scope="col">Rating</th>
-                                            <th scope="col"></th>
+                                            <th scope="col"><i class="fas fa-sort-up" onClick={this.sortPopularityDesc} />Popularity<i class="fas fa-sort-down" onClick={this.sortPopularityAsc}> </i></th>
+                                            <th scope="col"><i class="fas fa-sort-up" onClick={this.sortRatingDesc} />Rating<i class="fas fa-sort-down" onClick={this.sortRatingAsc}> </i></th>
                                         </tr>
                                     </thead>
                                     <tbody>
