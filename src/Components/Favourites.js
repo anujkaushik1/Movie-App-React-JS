@@ -183,7 +183,7 @@ export default class Favourites extends Component {
         }
 
         let si = (this.state.currPage - 1) * this.state.limit;
-        let ei = si + this.state.limit;
+        let ei = parseInt(this.state.limit)+si;
         filterArr = filterArr.slice(si, ei);
 
 
@@ -191,7 +191,7 @@ export default class Favourites extends Component {
             <>
                 <div className="main">
                     <div className="row">
-                        <div className="col-3">
+                        <div className="col-lg-3  col-sm-12">
                             <ul class="list-group favourites-genres">
 
                                 {
@@ -210,7 +210,7 @@ export default class Favourites extends Component {
                             </ul>
                         </div>
 
-                        <div className="col-9 favourites-table">
+                        <div className="col-lg-9 favourites-table col-sm-12">
                             <div className="row">
                                 <input type="text" className="input-group-text col" placeholder="Search" value={this.state.currText} onChange={(e) => this.setState({ currText: e.target.value })} />
                                 <input type="number" className="input-group-text col" placeholder="Rows Count" value={this.state.limit} onChange = {(e) => this.setState({limit : e.target.value})}/>
