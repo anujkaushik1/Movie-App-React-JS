@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 
 export default class Movies extends Component {
-    
+
     constructor() {
         console.log("constructor");
 
@@ -11,21 +11,21 @@ export default class Movies extends Component {
             hover: '',
             parr: [1],  // for all pages button shown in UI
             currPage: 1,  // current page
-            movies : [],
-            favourites : []
+            movies: [],
+            favourites: []
         }
     }
 
-   async componentDidMount(){   // methods for side effects work
+    async componentDidMount() {   // methods for side effects work
         console.log("mounting done");
 
         const res = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=5984df98ddb29f07afe65af3db9ac90c&page=${this.state.currPage}`);
         let data = res.data;
 
         this.setState({
-            movies : [...data.results]
+            movies: [...data.results]
         })
-        
+
     }
 
     mouseEnter = (id) => {
@@ -41,33 +41,33 @@ export default class Movies extends Component {
 
     }
 
-    nextPage = async () => {    
+    nextPage = async () => {
 
         const res = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=5984df98ddb29f07afe65af3db9ac90c&page=${this.state.currPage + 1}`);
-        let data = res.data;        
+        let data = res.data;
 
         this.setState({
             parr: [...this.state.parr, this.state.parr.length + 1],
-            currPage : this.state.currPage + 1,
-            movies : [...data.results]
+            currPage: this.state.currPage + 1,
+            movies: [...data.results]
         })
     }
 
     previousPage = async () => {
 
-        if(this.state.currPage > 1){
+        if (this.state.currPage > 1) {
             const res = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=5984df98ddb29f07afe65af3db9ac90c&page=${this.state.currPage - 1}`);
             let data = res.data;
 
             let newArr = [...this.state.parr];
             newArr.length > 1 && newArr.pop();
             let currPage = this.state.currPage;
-    
+
             let newPage = currPage > 1 ? currPage - 1 : 1;
-    
+
             this.setState({
                 parr: newArr,
-                currPage : newPage,
+                currPage: newPage,
                 movies: [...data.results]
             })
         }
@@ -78,29 +78,29 @@ export default class Movies extends Component {
     clickPages = async (idx) => {
         const res = await axios.get(`https://api.themoviedb.org/3/trending/movie/week?api_key=5984df98ddb29f07afe65af3db9ac90c&page=${idx + 1}`);
         let data = res.data.results;
-        
+
         this.setState({
-            movies : [...data]
+            movies: [...data]
         })
 
-    }   
+    }
 
-    sendDataLocalStorage =(movie)=>{
-        let oldData = JSON.parse(localStorage.getItem("movies-app") || "[]")
-        if(this.state.favourites.includes(movie.id)){
-            oldData = oldData.filter((m)=>m.id!=movie.id)
-        }else{
+    sendDataLocalStorage = (movie) => {
+        let oldData = JSON.parse(localStorage.getItem("movies") || "[]")
+        if (this.state.favourites.includes(movie.id)) {
+            oldData = oldData.filter((m) => m.id != movie.id)
+        } else {
             oldData.push(movie)
         }
-        localStorage.setItem("movies-app",JSON.stringify(oldData));
+        localStorage.setItem("movies", JSON.stringify(oldData));
         console.log(oldData);
         this.handleFavouritesState();
     }
-    handleFavouritesState=()=>{
-        let oldData = JSON.parse(localStorage.getItem("movies-app") || "[]")
-        let temp = oldData.map((movie)=>movie.id);
+    handleFavouritesState = () => {
+        let oldData = JSON.parse(localStorage.getItem("movies") || "[]")
+        let temp = oldData.map((movie) => movie.id);
         this.setState({
-            favourites:[...temp]
+            favourites: [...temp]
         })
     }
 
