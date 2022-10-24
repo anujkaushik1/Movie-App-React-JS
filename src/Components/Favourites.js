@@ -10,7 +10,8 @@ export default class Favourites extends Component {
             currGenre: 'All Geners',
             movies: [],
             currText: '',
-            limit: 5
+            limit: 5,
+            currPage: 1
         }
     }
 
@@ -102,6 +103,29 @@ export default class Favourites extends Component {
         })
     }
 
+    handlePageChange = (page) => {
+        this.setState({
+            currPage: page
+        })
+    }
+
+    deleteMovie = (movie) => {
+
+        let moviesArr = this.state.movies.filter((movieObj) => {
+            if(movieObj !== movie){
+                return movieObj;
+            }
+        })
+
+        localStorage.setItem("movies", JSON.stringify(moviesArr));
+
+        this.setState({
+            movies : [...moviesArr]
+        })
+
+    }
+
+
     render() {
 
         let genreids = {
@@ -151,7 +175,18 @@ export default class Favourites extends Component {
             })
         }
 
-       
+        let pages = Math.ceil(filterArr.length / this.state.limit);
+        let pagesArr = [];
+
+        for (let i = 1; i <= pages; i++) {
+            pagesArr.push(i);
+        }
+
+        let si = (this.state.currPage - 1) * this.state.limit;
+        let ei = si + this.state.limit;
+        filterArr = filterArr.slice(si, ei);
+
+
         return (
             <>
                 <div className="main">
@@ -178,7 +213,7 @@ export default class Favourites extends Component {
                         <div className="col-9 favourites-table">
                             <div className="row">
                                 <input type="text" className="input-group-text col" placeholder="Search" value={this.state.currText} onChange={(e) => this.setState({ currText: e.target.value })} />
-                                <input type="number" className="input-group-text col" placeholder="Rows Count" />
+                                <input type="number" className="input-group-text col" placeholder="Rows Count" value={this.state.limit} onChange = {(e) => this.setState({limit : e.target.value})}/>
                             </div>
 
                             <div className="row">
@@ -199,7 +234,7 @@ export default class Favourites extends Component {
                                                     <td>{genreids[movieObj.genre_ids[0]]}</td>
                                                     <td>{movieObj.popularity}</td>
                                                     <td>{movieObj.vote_average}</td>
-                                                    <td><button type="button" class="btn btn-danger">Delete</button></td>
+                                                    <td><button type="button" class="btn btn-danger" onClick={() => this.deleteMovie(movieObj)}>Delete</button></td>
 
                                                 </tr>
                                             ))
@@ -209,9 +244,12 @@ export default class Favourites extends Component {
                             </div>
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    {
+                                        pagesArr.map((page) => (
+                                            <li class="page-item"><a class="page-link" onClick={() => this.handlePageChange(page)}>{page}</a></li>
+                                        ))
+                                    }
+
                                 </ul>
                             </nav>
                         </div>
